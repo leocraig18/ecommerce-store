@@ -23,7 +23,12 @@ export const productListReducer = (state = { products: [] }, action) => {
     case PRODUCT_LIST_REQUEST:
       return { loading: true, products: [] };
     case PRODUCT_LIST_SUCCESS:
-      return { loading: false, products: action.payload };
+      return {
+        loading: false,
+        products: action.payload.products,
+        pages: action.payload.pages,
+        page: action.payload.page,
+      };
     case PRODUCT_LIST_FAIL:
       return { loading: false, error: action.payload };
     default:
@@ -50,9 +55,9 @@ export const productDetailsReducer = (
 export const productDeleteReducer = (state = {}, action) => {
   switch (action.type) {
     case PRODUCT_DELETE_REQUEST:
-      return { loading: true,};
+      return { loading: true };
     case PRODUCT_DELETE_SUCCESS:
-      return { loading: false, success:true};
+      return { loading: false, success: true };
     case PRODUCT_DELETE_FAIL:
       return { loading: false, error: action.payload };
     default:
@@ -68,13 +73,13 @@ export const productCreateReducer = (state = {}, action) => {
     case PRODUCT_CREATE_FAIL:
       return { loading: false, error: action.payload };
     case PRODUCT_CREATE_RESET:
-      return { };
+      return {};
     default:
       return state;
   }
 };
 
-export const productUpdateReducer = (state = {product: {}}, action) => {
+export const productUpdateReducer = (state = { product: {} }, action) => {
   switch (action.type) {
     case PRODUCT_UPDATE_REQUEST:
       return { loading: true };
@@ -83,7 +88,7 @@ export const productUpdateReducer = (state = {product: {}}, action) => {
     case PRODUCT_UPDATE_FAIL:
       return { loading: false, error: action.payload };
     case PRODUCT_UPDATE_RESET:
-      return {product: {}};
+      return { product: {} };
     default:
       return state;
   }

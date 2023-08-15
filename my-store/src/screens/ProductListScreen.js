@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Button, Table, Row, Col } from "react-bootstrap";
-import { useNavigate, useLocatio, useParams } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
+import Paginate from "../components/Paginate";
 import { listProducts, deleteProduct, createProduct } from "../actions/productActions";
 import { PRODUCT_CREATE_RESET } from '../constants/productConstants'
 
 function UserListScreen() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const productList = useSelector((state) => state.productList);
-  const { loading, error, products } = productList;
+  const { loading, error, products, pages, page } = productList;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -24,6 +26,7 @@ function UserListScreen() {
     const productCreate = useSelector((state) => state.productCreate);
     const {loading: loadingCreate, error: errorCreate, success: successCreate, product:createdProduct } = productCreate;
 
+    let keyword = location.search
   useEffect(() => {
     dispatch({type:PRODUCT_CREATE_RESET,})
     if (!userInfo.isAdmin) {
@@ -32,9 +35,9 @@ function UserListScreen() {
     if (successCreate) {
       navigate(`/admin/product/${createdProduct._id}/edit`);
     } else {
-      dispatch(listProducts())
+      dispatch(listProducts(keyword))
     }
-  }, [dispatch, navigate, userInfo, successDelete, successCreate]);
+  }, [dispatch, navigate, userInfo, successDelete, successCreate, keyword]);
 
   const createProductHandler = () => {
     dispatch(createProduct())
@@ -69,7 +72,7 @@ function UserListScreen() {
       ) : error ? (
         <Message variant="danger">{error}</Message>
       ) : (
-        <Table striped bordered hover responsive className="table-sm">
+        <div><Table striped bordered hover responsive className="table-sm">
           <thead>
             <tr>
               <th>ID</th>
@@ -107,6 +110,8 @@ function UserListScreen() {
             ))}
           </tbody>
         </Table>
+        <Paginate pages={pages} page={page} isAdmin={true} />
+        </div>
       )}
     </div>
   );
