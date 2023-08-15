@@ -1,0 +1,7 @@
+ - Image uploads before the product is uploaded. This could lead to multiple unneccesary files being uploading to backend.
+    - Should refactor to execute the file upload when update product is triggered and wait for upload to execute PUT request on product.
+
+- Add a guest checkout feature so login isnt required.
+    - Consider storing information anyway incase they sign up in future to see previous orders attached to their email.
+    -  Require users to select guest or login checkout before going to shipping page.
+    - Create less steps to complete purchase by adding more info to each page.
