@@ -7,6 +7,7 @@ import Loader from "../components/Loader";
 import Message from "../components/Message";
 import Paginate from "../components/Paginate";
 import { listProducts } from '../actions/productActions';
+import ProductCarousel from '../components/ProductCarousel'
 
 function HomeScreen() {
   const dispatch = useDispatch();
@@ -20,6 +21,7 @@ function HomeScreen() {
   }, [dispatch, keyword]);
   return (
     <div>
+      {!keyword && <ProductCarousel />}
       <h1>Latest Products</h1>
       {loading ? (
         <Loader />
@@ -34,7 +36,7 @@ function HomeScreen() {
               </Col>
             ))}
           </Row>
-          <Paginate page={page} pages={pages} keyword={keyword}/>
+          <Paginate page={page} pages={pages} keyword={keyword} />
         </div>
       )}
     </div>
